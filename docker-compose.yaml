@@ -1,0 +1,29 @@
+services:
+  cli:
+    image: cli
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+    - ./pdf:/d3fau1t/app/pdf
+    - ./png:/d3fau1t/app/png
+    - ./ppt:/d3fau1t/app/ppt
+    command: >
+      sleep infinity
+
+  web:
+    image: web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+    - ./common.py:/d3fau1t/app/common.py
+    - ./app.py:/d3fau1t/app/app.py
+    - ./converter:/d3fau1t/app/converter
+    - ./pdf:/d3fau1t/app/pdf
+    - ./png:/d3fau1t/app/png
+    - ./ppt:/d3fau1t/app/ppt
+    ports:
+    - "38080:8080"
+    command: >
+      poetry run uvicorn app:app --host 0.0.0.0 --port 8080 --reload
